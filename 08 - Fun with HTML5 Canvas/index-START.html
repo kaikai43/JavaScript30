@@ -8,6 +8,48 @@
 <body>
 <canvas id="draw" width="800" height="800"></canvas>
 <script>
+  const canvas = document.querySelector('#draw');
+  const ctx = canvas.getContext('2d');
+
+  // resize the canvas to fill browser window dynamically
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+
+  // set color and line settings
+  ctx.strokeStyle = '#BADA55';
+  ctx.lineJoin = 'round';
+  ctx.lineCap = 'round';
+  let hue = 0;
+  let direction = true;
+
+  let isDrawing = false; // flag to check if mouse is down
+  let lastX = 0; // last x position of mouse
+  let lastY = 0; // last y position of mouse
+
+  function draw(e) {
+    if (!isDrawing) return; // stop the fn from running when they are not moused down
+    ctx.strokeStyle = `hsl(${hue}, 100%, 50%)`;
+    ctx.lineWidth = hue;
+    ctx.beginPath();
+    // start from
+    ctx.moveTo(lastX, lastY);
+    // go to
+    ctx.lineTo(e.offsetX, e.offsetY);
+    ctx.stroke();
+    [lastX, lastY] = [e.offsetX, e.offsetY];
+    hue++;
+    if (hue >= 360) hue = 0;
+    if (ctx.lineWidth >= 100 || ctx.lineWIdth <= 1) direction = !direction;
+    ctx.lineWIdth = direction ? ctx.lineWidth + 1 : ctx.lineWidth - 1;
+  }
+
+  canvas.addEventListener('mousedown', (e) => {
+    isDrawing = true;
+    [lastX, lastY] = [e.offsetX, e.offsetY]; // set lastX and lastY to current mouse position
+  });
+  canvas.addEventListener('mousemove', draw);
+  canvas.addEventListener('mouseup', () => isDrawing = false);
+  canvas.addEventListener('mouseout', () => isDrawing = false); // if mouse leaves the canvas
 </script>
 
 <style>
