@@ -103,6 +103,13 @@ body {
   flex: 0;
 }
 
+.full-screen {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 /* unholy css to style input type="range" */
 
 input[type=range] {
